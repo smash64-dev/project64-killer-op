@@ -4,11 +4,17 @@
 #SingleInstance force
 
 KillAndRestart(exe := "") {
-    Process, WaitClose, % exe, 15
+    Process, Exist, % exe
+    If (!ErrorLevel=0) {
+        Process, Close, % exe
+    }
+
     Run % exe
     WinActivate, % Format("ahk_exe {1}", exe)
-    WinMenuSelectItem % Format("ahk_exe {1}", exe),, File, Start Netplay...
-    WinMenuSelectItem % Format("ahk_exe {1}", exe),, File, Start Kaillera...
+    Sleep 150
+
+    WinMenuSelectItem % Format("ahk_exe {1}", exe),, File, % Format("{1}", "Start Kaillera...")
+    WinMenuSelectItem % Format("ahk_exe {1}", exe),, File, % Format("{1}", "Start Netplay...")
 }
 
 ; entry point
