@@ -11,10 +11,17 @@ KillAndRestart(exe := "") {
 
     Run % exe
     WinActivate, % Format("ahk_exe {1}", exe)
-    Sleep 150
+    Sleep 500
 
-    WinMenuSelectItem % Format("ahk_exe {1}", exe),, File, % Format("{1}", "Start Kaillera...")
-    WinMenuSelectItem % Format("ahk_exe {1}", exe),, File, % Format("{1}", "Start Netplay...")
+    in_wine := DllCall("GetProcAddress", "Ptr", DllCall("GetModuleHandle", "Str", "ntdll", "Ptr"), "AStr", "wine_get_version", "Ptr")
+
+    if in_wine {
+        Sleep 500
+        Send "{Alt down}{Alt up}fn"
+    } else {
+        WinMenuSelectItem % Format("ahk_exe {1}", exe),, File, % Format("{1}", "Start Kaillera...")
+        WinMenuSelectItem % Format("ahk_exe {1}", exe),, File, % Format("{1}", "Start Netplay...")
+    }
 }
 
 ; entry point
