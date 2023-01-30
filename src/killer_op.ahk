@@ -92,7 +92,6 @@ AutoServerQueue(ip, game_keys, want_record := "0") {
 Kill(exe := "") {
     Process, Exist, % exe
     If (!ErrorLevel=0) {
-        SplitPath, exe, name
         Process, Close, % name
     }
 }
@@ -125,9 +124,7 @@ if FileExist(KAILLERA_CONFIG) {
     IniRead, AUTO_SERVER_RECORD, % KAILLERA_CONFIG, auto_server, record, "0"
 }
 
-PACKAGE_UPDATER := Format("{1}\Tools\package-updater.exe", SELF_DIR)
-Kill(PACKAGE_UPDATER)
-
+Kill("package-updater.exe")
 loop, files, %PROJECT64_FORMAT%
 {
     ; never activate on self
