@@ -25,7 +25,7 @@ jobs:
         shell: bash
         run: |
           zip src/project64-killer-op.zip src/Project64KillerOP.exe
-          sha1sum "src/project64-killer-op.zip" > src/sha1sum.txt)
+          sha1sum "src/project64-killer-op.zip" > src/sha1sum.txt
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
