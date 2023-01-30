@@ -1,0 +1,36 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  Release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Compile
+        id: ahk2exe
+        uses: cennis91/action-ahk2exe@main
+        with:
+          in: src/killer_op.ahk
+          out: src/Project64KillerOP.exe
+          icon: res/JandsomeHR.ico
+          cp: 65001
+
+      - name: Archive Package
+        shell: bash
+        run: |
+          zip src/project64-killer-op.zip src/Project64KillerOP.exe
+          sha1sum "src/project64-killer-op.zip" > src/sha1sum.txt)
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          body_path: build/RELEASE.md
+          draft: true
+          files: |
+            src/project64-killer-op.zip
+            src/sha1sum.txt

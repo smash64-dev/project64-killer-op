@@ -89,11 +89,15 @@ AutoServerQueue(ip, game_keys, want_record := "0") {
     }
 }
 
-KillAndRestart(exe := "") {
+Kill(exe := "") {
     Process, Exist, % exe
     If (!ErrorLevel=0) {
         Process, Close, % exe
     }
+}
+
+KillAndRestart(exe := "") {
+    Kill(exe)
 
     Run % exe
     WinActivate, % Format("ahk_exe {1}", exe)
@@ -120,6 +124,9 @@ if FileExist(KAILLERA_CONFIG) {
     IniRead, AUTO_SERVER_GAME, % KAILLERA_CONFIG, auto_server, game, ""
     IniRead, AUTO_SERVER_RECORD, % KAILLERA_CONFIG, auto_server, record, "0"
 }
+
+PACKAGE_UPDATER := Format("{1}\Tools\package-updater.exe", SELF_DIR)
+Kill(PACKAGE_UPDATER)
 
 loop, files, %PROJECT64_FORMAT%
 {
