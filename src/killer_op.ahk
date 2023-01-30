@@ -92,7 +92,7 @@ AutoServerQueue(ip, game_keys, want_record := "0") {
 Kill(exe := "") {
     Process, Exist, % exe
     If (!ErrorLevel=0) {
-        Process, Close, % name
+        Process, Close, % exe
     }
 }
 
