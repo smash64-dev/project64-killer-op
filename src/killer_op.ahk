@@ -4,7 +4,7 @@
 #SingleInstance force
 
 AutoServerQueue(ip, game_keys, want_record := "0") {
-    if (!ip || !game_keys) {
+    if (ip == "__UNSET__" || game_keys == "__UNSET__") {
         return
     }
 
@@ -92,13 +92,13 @@ AutoServerQueue(ip, game_keys, want_record := "0") {
 Kill(exe := "") {
     Process, Exist, % exe
     If (!ErrorLevel=0) {
-        Process, Close, % exe
+        SplitPath, exe, name
+        Process, Close, % name
     }
 }
 
 KillAndRestart(exe := "") {
     Kill(exe)
-
     Run % exe
     WinActivate, % Format("ahk_exe {1}", exe)
     Sleep 1000
@@ -120,8 +120,8 @@ PROJECT64_FORMAT := Format("{1}\Project64*.exe", SELF_DIR)
 KAILLERA_CONFIG := Format("{1}\Net\cfg", SELF_DIR)
 
 if FileExist(KAILLERA_CONFIG) {
-    IniRead, AUTO_SERVER_IP, % KAILLERA_CONFIG, auto_server, ip, ""
-    IniRead, AUTO_SERVER_GAME, % KAILLERA_CONFIG, auto_server, game, ""
+    IniRead, AUTO_SERVER_IP, % KAILLERA_CONFIG, auto_server, ip, __UNSET__
+    IniRead, AUTO_SERVER_GAME, % KAILLERA_CONFIG, auto_server, game, __UNSET__
     IniRead, AUTO_SERVER_RECORD, % KAILLERA_CONFIG, auto_server, record, "0"
 }
 
